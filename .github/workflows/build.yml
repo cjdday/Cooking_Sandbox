@@ -1,0 +1,24 @@
+name: 🏗️ Build Image
+
+on:
+  workflow_run:
+      workflows: ["🧪 Testing"]
+      types:
+        - completed
+  push:
+    branches: [ dev, main ]
+  pull_request:
+    branches: [ dev, main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+      - name: 🏗️ Build Docker image
+        run: docker build -t recipegraph:latest .
+      - name: ✅ Verify image built successfully
+        run: docker images | grep recipegraph
