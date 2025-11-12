@@ -27,6 +27,7 @@ jobs:
         id: python_version
         run: |
           PYTHON_VERSION=$(grep '^- python=' ./requirements/environment.yml | cut -d'=' -f2 | xargs)
+          echo "PYTHON_VERSION=$PYTHON_VERSION"
           echo "PYTHON_VERSION=$PYTHON_VERSION" >> $GITHUB_ENV
       - name: 🔍 Run Mypy
         uses: jashparekh/mypy-action@v3
