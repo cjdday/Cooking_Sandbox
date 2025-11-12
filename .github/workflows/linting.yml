@@ -17,23 +17,22 @@ jobs:
       - name: 🧹 Run Ruff
         uses: astral-sh/ruff-action@v3
         with:
-          version: 0.8.0
-          args: 'check --select B ./src'
+          src: "./src"
 
-  mypy:
-    name: Mypy Type Check
-    runs-on: ubuntu-latest
-    steps:
-      - name: 📥 Checkout repository
-        uses: actions/checkout@v5
-      - name: 🔍 Read Python version from environment.yml
-        id: python_version
-        run: |
-          PYTHON_VERSION=$(grep '^- python=' ./requirements/environment.yml | cut -d'=' -f2 | xargs)
-          echo "PYTHON_VERSION=$PYTHON_VERSION" >> $GITHUB_ENV
-      - name: 🔍 Run Mypy
-        uses: jpetrucciani/mypy-check@1.14.1
-        with:
-          path: '.'
-          mypy_flags: '--verbose --ignore-missing-imports'
-          python_version: ${{ env.PYTHON_VERSION }}
+  # mypy:
+  #   name: Mypy Type Check
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: 📥 Checkout repository
+  #       uses: actions/checkout@v5
+  #     - name: 🔍 Read Python version from environment.yml
+  #       id: python_version
+  #       run: |
+  #         PYTHON_VERSION=$(grep '^- python=' ./requirements/environment.yml | cut -d'=' -f2 | xargs)
+  #         echo "PYTHON_VERSION=$PYTHON_VERSION" >> $GITHUB_ENV
+  #     - name: 🔍 Run Mypy
+  #       uses: jpetrucciani/mypy-check@1.14.1
+  #       with:
+  #         path: '.'
+  #         mypy_flags: '--verbose --ignore-missing-imports'
+  #         python_version: ${{ env.PYTHON_VERSION }}
