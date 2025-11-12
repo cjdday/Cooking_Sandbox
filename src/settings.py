@@ -1,8 +1,8 @@
 # settings.py
+import os
+
 from pydantic import AnyHttpUrl
 from pydantic_settings import BaseSettings
-from typing import List
-import os
 
 
 class Settings(BaseSettings):
@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     allow_origins_csv: str = os.getenv("ALLOW_ORIGINS", "http://localhost:3000")
 
     @property
-    def allow_origins(self) -> List[AnyHttpUrl] | List[str]:
+    def allow_origins(self) -> list[AnyHttpUrl] | list[str]:
         return [o.strip() for o in self.allow_origins_csv.split(",") if o.strip()]
 
 

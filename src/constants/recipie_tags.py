@@ -1,8 +1,4 @@
-# src/constants/recipe_tags.py
-
-from typing import Dict, Set
-
-TAGS_BY_CATEGORY: Dict[str, Set[str]] = {
+TAGS_BY_CATEGORY: dict[str, set[str]] = {
     "dietary": {
         "vegetarian",
         "vegan",
@@ -95,4 +91,4 @@ TAGS_BY_CATEGORY: Dict[str, Set[str]] = {
 }
 
 # Flatten to a single set for validation
-VALID_TAGS: Set[str] = set().union(*TAGS_BY_CATEGORY.values())
+VALID_TAGS: set[str] = set().union(*TAGS_BY_CATEGORY.values())
