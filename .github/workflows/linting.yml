@@ -15,7 +15,7 @@ jobs:
       image: astral-sh/ruff:latest   # lightweight, prebuilt with Ruff
     steps:
       - name: 📥 Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: 🧹 Run Ruff
         run: ruff check .
 
@@ -26,11 +26,11 @@ jobs:
       image: cytopia/mypy:latest   # lightweight, prebuilt with Mypy
     steps:
       - name: 📥 Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: 🐍 Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.14"
       - name: 📦 Install Mypy
         run: |
           python -m pip install --upgrade pip

@@ -61,7 +61,7 @@ Each phase focuses on one concept area.
 <details>
 <summary><strong>Phase 0 — Groundwork</strong></summary>
 
-- [ ] Initialize repository and README  
+- [x] Initialize repository and README  
 - [ ] Configure linting, formatting, typing, and testing tools  
 - [ ] Set up virtual environment and dependency manager  
 
