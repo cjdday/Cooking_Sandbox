@@ -11,6 +11,7 @@ jobs:
   ruff:
     name: Ruff Linter
     runs-on: ubuntu-latest
+    steps:
       - name: 📥 Checkout repository
         uses: actions/checkout@v5
       - name: 🧹 Run Ruff
