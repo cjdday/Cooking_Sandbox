@@ -1,55 +1,90 @@
-name: 🏗️ Build and Publish Image
+name: 🏗️ Build and Publish Images
 
 on:
   workflow_run:
-      workflows: ["🧪 Testing"]
-      types:
-        - completed
+    workflows: ["🧪 Testing"]
+    types:
+      - completed
   push:
-    branches: [ dev, main ]
+    branches: [dev, main]
   pull_request:
-    branches: [ dev, main ]
+    branches: [dev, main]
   workflow_dispatch:
 
 jobs:
   build_and_push_to_registry:
-    name: Build and Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     permissions:
-      packages: write
       contents: read
+      packages: write
       attestations: write
       id-token: write
+
     steps:
       - name: 📥 Checkout repository
         uses: actions/checkout@v5
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+      # Login to Docker Hub
+      - name: 🔐 Log in to Docker Hub
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+      ##########################################################
+      # BACKEND IMAGE
+      ##########################################################
+      - name: 🏷️ Extract metadata (backend)
+        id: meta_backend
+        uses: docker/metadata-action@v5
         with:
-          images: ianrosenr/sandbox
+          images: ianrosenr/cookbook-backend
+          tags: |
+            type=ref,event=branch
+            type=sha
 
-      - name: Build and push Docker image
-        id: push
-        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+      - name: 📦 Build & push backend
+        id: push_backend
+        uses: docker/build-push-action@v5
         with:
-          context: .
-          file: ./Dockerfile
+          context: ./backend
+          file: ./backend/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta_backend.outputs.tags }}
+          labels: ${{ steps.meta_backend.outputs.labels }}
 
-      - name: Generate artifact attestation
+      - name: 📝 Attest backend
         uses: actions/attest-build-provenance@v3
         with:
-          subject-name: index.docker.io/ianrosenr/sandbox
-          subject-digest: ${{ steps.push.outputs.digest }}
+          subject-name: index.docker.io/ianrosenr/cookbook-backend
+          subject-digest: ${{ steps.push_backend.outputs.digest }}
           push-to-registry: true
-        
+
+      ##########################################################
+      # FRONTEND IMAGE
+      ##########################################################
+      - name: 🏷️ Extract metadata (frontend)
+        id: meta_frontend
+        uses: docker/metadata-action@v5
+        with:
+          images: ianrosenr/cookbook-frontend
+          tags: |
+            type=ref,event=branch
+            type=sha
+
+      - name: 📦 Build & push frontend
+        id: push_frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: true
+          tags: ${{ steps.meta_frontend.outputs.tags }}
+          labels: ${{ steps.meta_frontend.outputs.labels }}
+
+      - name: 📝 Attest frontend
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-name: index.docker.io/ianrosenr/cookbook-frontend
+          subject-digest: ${{ steps.push_frontend.outputs.digest }}
+          push-to-registry: true
