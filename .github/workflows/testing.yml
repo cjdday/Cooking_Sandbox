@@ -32,4 +32,4 @@ jobs:
 
       - name: 🧪 Run Pytest
         run: |
-          pytest
+          pytest backend/tests
