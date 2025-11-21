@@ -9,14 +9,13 @@ from constants.recipie_tags import VALID_TAGS
 
 class Ingredient(BaseModel):
     name: str
-    quantity: str | None = None
+    quantity: str
     notes: str | None = None
 
 
 class Recipe(BaseModel):
     id: str
     name: str
-    cuisine_types: list[str] = Field(default_factory=list)
     average_cost_per_serving: float | None = None
     estimated_calories_per_serving: int | None = None
     ingredients: list[Ingredient]
