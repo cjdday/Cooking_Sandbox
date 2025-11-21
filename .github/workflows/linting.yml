@@ -23,11 +23,6 @@ jobs:
     steps:
       - name: 📥 Checkout repository
         uses: actions/checkout@v5
-      - name: 🔍 Read Python version from environment.yml
-        id: python_version
-        run: |
-          PYTHON_VERSION=$(grep '^- python=' ./requirements/environment.yml | cut -d'=' -f2 | xargs)
-          echo "PYTHON_VERSION=$PYTHON_VERSION" >> $GITHUB_ENV
       - name: 🔍 Run Mypy
         uses: jpetrucciani/mypy-check@1.14.1
         with:
